@@ -6,7 +6,15 @@ import java.util.Date;
  * Site:  http://www.nicenight.cc/
  */
 public class Record {
-    public int getRecordID() {
+    public int getPriority() {
+		return priority;
+	}
+
+	public void setPriority(int priority) {
+		this.priority = priority;
+	}
+
+	public int getRecordID() {
         return recordID;
     }
 
@@ -92,6 +100,7 @@ public class Record {
     String title;
     String author;
     String content;
+    int priority;
     int deepth;
     int type;
     Date crawltime;

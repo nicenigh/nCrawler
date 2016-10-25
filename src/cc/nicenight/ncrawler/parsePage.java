@@ -35,7 +35,7 @@ public class parsePage {
                     try {
                         URL nexturl=new URL(nextlink);
                         // only save page from domain
-                        if (nexturl.getHost().equals(task.domain)) {
+                        if (nexturl.getHost().equals(task.field)) {
 
                             // do not save any page from pass
                             if (nexturl.getHost().equals(task.pass)) {

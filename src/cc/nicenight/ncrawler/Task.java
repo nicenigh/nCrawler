@@ -6,7 +6,39 @@ import java.util.Date;
  * Site:  http://www.nicenight.cc/
  */
 public class Task {
-    public int getTaskID() {
+    public int getMaxlink() {
+		return maxlinks;
+	}
+
+	public void setMaxlink(int maxlink) {
+		this.maxlinks = maxlink;
+	}
+
+	public int getMaxpage() {
+		return maxpages;
+	}
+
+	public void setMaxpage(int maxpage) {
+		this.maxpages = maxpage;
+	}
+
+	public int getMaxlinkeachpage() {
+		return maxlinkeachpage;
+	}
+
+	public void setMaxlinkeachpage(int maxlinkeachpage) {
+		this.maxlinkeachpage = maxlinkeachpage;
+	}
+
+	public String getField() {
+		return field;
+	}
+
+	public void setField(String field) {
+		this.field = field;
+	}
+
+	public int getTaskID() {
         return taskID;
     }
 
@@ -38,14 +70,6 @@ public class Task {
         this.deepth = deepth;
     }
 
-    public String getDomain() {
-        return domain;
-    }
-
-    public void setDomain(String domain) {
-        this.domain = domain;
-    }
-
     public String getPass() {
         return pass;
     }
@@ -74,7 +98,10 @@ public class Task {
     String URL;
     int status;
     int deepth;
-    String domain;
+    int maxlinks;
+    int maxpages;
+    int maxlinkeachpage;
+    String field;
     String pass;
     String search;
     Date createtime;
