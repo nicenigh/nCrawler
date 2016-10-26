@@ -1,67 +1,96 @@
 package cc.nicenight.ncrawler;
 
+import java.net.URL;
+
+import com.sun.org.apache.xpath.internal.operations.And;
+
 /**
- * Created by nicenight on 16/10/25 025.
- * Site:  http://www.nicenight.cc/
+ * Created by nicenight on 16/10/25 Site: http://www.nicenight.cc/
  */
 public class nCrawler {
-    public static void main(String args[]) throws Exception {
-        String frontpage = "http://news.163.com/";
+	public static void main(String args[]) throws Exception {
+		String frontpage = "http://news.163.com/";
 
-        SQLiteHelper db = new SQLiteHelper("crawler.db");
-        // connect the sqlite database
-        // create database and tables that will be needed
-        if (db.connect()) {
-            System.out.println("connection built");
-            int count = 0;
-            int maxdeepth = 3;
-            int deepth = 0;
+		SQLiteHelper db = new SQLiteHelper("crawler.db");
+		// connect the sqlite database
+		// create database and tables that will be needed
+		if (db.connect() != null) {
+			db.dropTable();
+			db.createTable();
+			System.out.println("connection built");
+			int count = 0;
 
-            int task = db.instertTask(frontpage, maxdeepth, "");
-            int id = db.instertRecord(task, frontpage, 0);
+			URL url = new URL(frontpage);
 
-            String url = frontpage;
+			Task task = new Task(frontpage, 3, 30, 10, 10, url.getHost(), "", "");
+			int taskid = db.instertTask(task);
 
-            // crawl every link in the database
-            while (true) {
-                // get page content of link "url"
-                // new crawlThread(id, db).start();
-                httpGet.getByString(id, db);
-                db.crawledRecord(id);
-                count++;
+			Record record = new Record(taskid, frontpage, 0, 0);
+			int id = db.instertRecord(record);
 
-                // set boolean value "crawled" to true after crawling this page
-                id = db.nextRecord(maxdeepth);
+			String strurl = frontpage;
 
-                // set a limit of crawling count
-                if (count > 10 || url == null) {
-                    break;
-                }
-            }
-            db.close();
+			task = db.getTaskbyID(taskid);
 
-            System.out.println("Done.");
-            System.out.println(count);
-        }
-        System.exit(0);
-    }
+			// crawl every link in the database
+			while (true) {
+				// get page content of link
 
-    static class crawlThread extends Thread {
-        private int id;
-        private SQLiteHelper db;
+				db.crawlingRecord(id);
+				record = db.getRecordbyID(id);
 
-        public crawlThread(int id, SQLiteHelper db) {
-            this.id = id;
-            this.db = db;
-        }
+				// check limit of crawling count
+				if (db.exeQrInt("select count(*) from record where taskID=" + task.taskID
+						+ " and status<2 and deepth<" + task.maxdeepth + ";") < 1)
+					break;
+				if (db.exeQrInt("select count(*) from record where taskID=" + task.taskID
+						+ " and status=2;") > task.maxlinks)
+					break;
 
-        public void run() {
-            try {
-                httpGet.getByString(id, db);
-            } catch (Exception e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        }
-    }
+				if ((id > 0) && (record.deepth < task.maxdeepth)) {
+
+					System.out.println("crawling:" + record.uRL);
+					// multi thread
+					new crawlThread(record.uRL).start();
+					// single thread
+					// httpGet.getByString(id, db);
+
+					// set boolean value "crawled" to true after crawling this
+					// page
+					count++;
+
+					// find next un-crawled page
+					id = db.exeQrInt("select recordID from record where taskID=" + task.taskID
+							+ " and status=0 and deepth<" + task.maxdeepth + ";");
+
+					strurl = record.uRL;
+				}
+
+				// sleep for 10ms
+				Thread.sleep(10);
+			}
+			db.close();
+
+			System.out.println("Done.");
+			System.out.println(count);
+		}
+		System.exit(0);
+	}
+
+	static class crawlThread extends Thread {
+		private String strurl;
+
+		public crawlThread(String strurl) {
+			this.strurl = strurl;
+		}
+
+		public void run() {
+			try {
+				httpGet.getByString(strurl);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
 }

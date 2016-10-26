@@ -1,12 +1,47 @@
 package cc.nicenight.ncrawler;
 
 import java.util.Date;
+
 /**
- * Created by nicenight on 16/10/25 025.
- * Site:  http://www.nicenight.cc/
+ * Created by nicenight on 16/10/25 Site: http://www.nicenight.cc/
  */
 public class Task {
-    public int getMaxlink() {
+	public Task(String uRL, int deepth, int maxlinks, int maxpages, int maxlinkeachpage,
+			String field, String pass, String search) {
+		super();
+		this.uRL = uRL;
+		this.status = 0;
+		this.maxdeepth = deepth;
+		this.maxlinks = maxlinks;
+		this.maxpages = maxpages;
+		this.maxlinkeachpage = maxlinkeachpage;
+		this.field = field;
+		this.pass = pass;
+		this.search = search;
+	}
+
+	public Task(int taskID, String uRL, int status, int deepth, int maxlinks, int maxpages,
+			int maxlinkeachpage, String field, String pass, String search, Date createtime) {
+		super();
+		this.taskID = taskID;
+		this.uRL = uRL;
+		this.status = status;
+		this.maxdeepth = deepth;
+		this.maxlinks = maxlinks;
+		this.maxpages = maxpages;
+		this.maxlinkeachpage = maxlinkeachpage;
+		this.field = field;
+		this.pass = pass;
+		this.search = search;
+		this.createtime = createtime;
+	}
+
+	public Task() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	public int getMaxlink() {
 		return maxlinks;
 	}
 
@@ -39,70 +74,70 @@ public class Task {
 	}
 
 	public int getTaskID() {
-        return taskID;
-    }
+		return taskID;
+	}
 
-    public void setTaskID(int taskID) {
-        this.taskID = taskID;
-    }
+	public void setTaskID(int taskID) {
+		this.taskID = taskID;
+	}
 
-    public String getURL() {
-        return URL;
-    }
+	public String getURL() {
+		return uRL;
+	}
 
-    public void setURL(String uRL) {
-        URL = uRL;
-    }
+	public void setURL(String uRL) {
+		this.uRL = uRL;
+	}
 
-    public int getStatus() {
-        return status;
-    }
+	public int getStatus() {
+		return status;
+	}
 
-    public void setStatus(int status) {
-        this.status = status;
-    }
+	public void setStatus(int status) {
+		this.status = status;
+	}
 
-    public int getDeepth() {
-        return deepth;
-    }
+	public int getDeepth() {
+		return maxdeepth;
+	}
 
-    public void setDeepth(int deepth) {
-        this.deepth = deepth;
-    }
+	public void setDeepth(int deepth) {
+		this.maxdeepth = deepth;
+	}
 
-    public String getPass() {
-        return pass;
-    }
+	public String getPass() {
+		return pass;
+	}
 
-    public void setPass(String pass) {
-        this.pass = pass;
-    }
+	public void setPass(String pass) {
+		this.pass = pass;
+	}
 
-    public String getSearch() {
-        return search;
-    }
+	public String getSearch() {
+		return search;
+	}
 
-    public void setSearch(String search) {
-        this.search = search;
-    }
+	public void setSearch(String search) {
+		this.search = search;
+	}
 
-    public Date getCreatetime() {
-        return createtime;
-    }
+	public Date getCreatetime() {
+		return createtime;
+	}
 
-    public void setCreatetime(Date createtime) {
-        this.createtime = createtime;
-    }
+	public void setCreatetime(Date createtime) {
+		this.createtime = createtime;
+	}
 
-    int taskID;
-    String URL;
-    int status;
-    int deepth;
-    int maxlinks;
-    int maxpages;
-    int maxlinkeachpage;
-    String field;
-    String pass;
-    String search;
-    Date createtime;
+	int taskID = 0;
+	String uRL = "";
+	int status = 0;
+	int maxdeepth = 0;
+	int maxlinks = 0;
+	int maxpages = 0;
+	int maxlinkeachpage = 0;
+	String field = "";
+	String pass = "";
+	String search = "";
+	Date createtime = new Date();
 }
